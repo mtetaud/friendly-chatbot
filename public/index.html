@@ -14,6 +14,12 @@
       <div id="current-model" class="current-model">
         <div class="model-badge">No model selected</div>
       </div>
+      <div id="mcp-tools-badge" class="mcp-tools-badge hidden">
+        <span id="mcp-tools-count">0</span> outils MCP disponibles
+        <div class="mcp-tools-tooltip">
+          <div id="mcp-tools-list" class="mcp-tools-list"></div>
+        </div>
+      </div>
       <button id="settings-button" class="settings-button" title="Settings">
         <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
           <circle cx="12" cy="12" r="3"></circle>
@@ -109,6 +115,73 @@
           <input type="range" id="temperature" min="0" max="1" step="0.1" value="0.1" class="settings-input">
           <span id="temperature-value">0.1</span>
           <div class="form-info">Lower values are more focused, higher values more creative.</div>
+        </div>
+        
+        <!-- MCP Server Configuration -->
+        <div class="form-group mcp-section">
+          <h3>MCP Servers</h3>
+          <div class="mcp-servers-list" id="mcp-servers-list">
+            <!-- MCP servers will be listed here -->
+            <div class="empty-list-message">No MCP servers configured.</div>
+          </div>
+          
+          <button type="button" id="add-mcp-server" class="add-button">+ Add MCP Server</button>
+          
+          <!-- MCP Server Form (initially hidden, shown when adding or editing) -->
+          <div id="mcp-server-form" class="mcp-server-form hidden">
+            <h4 id="mcp-form-title">Add MCP Server</h4>
+            
+            <div class="form-row">
+              <label for="mcp-server-name">Name:</label>
+              <input type="text" id="mcp-server-name" class="settings-input" placeholder="My MCP Server">
+            </div>
+            
+            <div class="form-row">
+              <label for="mcp-server-type">Type:</label>
+              <select id="mcp-server-type" class="settings-input">
+                <option value="stdio">stdio</option>
+                <option value="http">http</option>
+              </select>
+            </div>
+            
+            <div class="form-row">
+              <label for="mcp-command">Command:</label>
+              <div class="input-wrapper">
+                <input type="text" id="mcp-command" class="settings-input" placeholder="npx">
+                <button type="button" id="pick-command" class="pick-button">Pick</button>
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <label for="mcp-command-args">Arguments:</label>
+              <div class="input-wrapper">
+                <input type="text" id="mcp-command-args" class="settings-input" placeholder="-y @wonderwhy-er/desktop-client">
+                <button type="button" id="pick-args" class="pick-button">Pick</button>
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <label for="mcp-env-vars">Environment variables:</label>
+              <table id="mcp-env-vars" class="env-vars-table">
+                <tr>
+                  <th>Key</th>
+                  <th>Value</th>
+                  <th></th>
+                </tr>
+                <tr>
+                  <td><input type="text" class="env-key settings-input" placeholder="Key"></td>
+                  <td><input type="text" class="env-value settings-input" placeholder="Value"></td>
+                  <td><button type="button" class="remove-env-var">✕</button></td>
+                </tr>
+              </table>
+              <button type="button" id="add-env-var" class="add-env-var">+ Add Variable</button>
+            </div>
+            
+            <div class="form-actions">
+              <button type="button" id="save-mcp-server" class="action-button save">Save Server</button>
+              <button type="button" id="cancel-mcp-server" class="action-button cancel">Cancel</button>
+            </div>
+          </div>
         </div>
         
         <button id="save-settings" class="settings-save-button">Save Settings</button>
