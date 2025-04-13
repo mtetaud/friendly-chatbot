@@ -1,0 +1,80 @@
+# Dependency directories
+node_modules/
+jspm_packages/
+package-lock.json
+
+# Environment variables
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Operating System Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Build directories
+dist/
+build/
+coverage/
+.nyc_output
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+*.sublime-workspace
+*.sublime-project
+
+# Misc
+.cache/
+.tmp/
+.temp/
+.docz/
+.next/
+.nuxt/
+.vuepress/dist
+.serverless/
+.fusebox/
+.dynamodb/
+
+# Debug files
+.node_repl_history
+.yarn-integrity
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Local LLM model files (if applicable)
+models/
+*.bin
+*.onnx
+*.pt
+*.h5
+
+# LLM specifics
+openai_api_key.txt
+ollama_config.json
+
+# Local database
+*.sqlite
+*.sqlite3
+*.db

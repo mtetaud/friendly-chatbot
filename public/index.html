@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Friendly Chatbot</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="chat-container">
+    <header>
+      <h1>Friendly Chatbot</h1>
+      <div class="subtitle">Powered by MCP Tool Agent</div>
+      <div id="current-model" class="current-model">
+        <div class="model-badge">No model selected</div>
+      </div>
+      <button id="settings-button" class="settings-button" title="Settings">
+        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
+      </button>
+    </header>
+    
+    <div class="messages-container" id="messages">
+      <div class="message bot">
+        <div class="message-content">
+          Hello! I'm your friendly assistant. I can help you with various tasks using tools from the Model Context Protocol. Try asking me something!
+        </div>
+      </div>
+    </div>
+    
+    <div class="typing-indicator hidden" id="typing-indicator">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    
+    <form id="message-form" class="message-form">
+      <input type="text" id="message-input" placeholder="Type your message here..." autocomplete="off">
+      <button type="submit">
+        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="22" y1="2" x2="11" y2="13"></line>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+        </svg>
+      </button>
+    </form>
+  </div>
+
+  <!-- Settings Modal -->
+  <div id="settings-modal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Settings</h2>
+        <button id="close-settings" class="close-button">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="llm-provider">LLM Provider:</label>
+          <select id="llm-provider" class="settings-input">
+            <option value="openai">OpenAI</option>
+            <option value="ollama">Ollama (Local)</option>
+          </select>
+        </div>
+        
+        <div class="form-group" id="openai-settings">
+          <label for="openai-api-key">OpenAI API Key:</label>
+          <div class="input-wrapper">
+            <input type="password" id="openai-api-key" class="settings-input" placeholder="sk-...">
+            <button type="button" id="refresh-openai-models" class="refresh-button" title="Refresh Models">
+              <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
+                <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.3"/>
+              </svg>
+            </button>
+          </div>
+          <div id="openai-models-loading" class="loading-indicator" style="visibility: hidden;">Loading models...</div>
+          
+          <label for="openai-model">Model:</label>
+          <select id="openai-model" class="settings-input">
+            <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
+            <option value="gpt-4o">GPT-4o</option>
+            <option value="gpt-4">GPT-4</option>
+            <option value="gpt-4-turbo">GPT-4 Turbo</option>
+          </select>
+          <div class="form-info">Your API key is stored in your browser and sent directly to the server for each request.</div>
+        </div>
+        
+        <div class="form-group hidden" id="ollama-settings">
+          <label for="ollama-url">Ollama URL:</label>
+          <input type="text" id="ollama-url" class="settings-input" value="http://localhost:11434">
+          
+          <label for="ollama-model">Model:</label>
+          <div class="select-wrapper">
+            <select id="ollama-model" class="settings-input">
+              <!-- Will be populated dynamically -->
+            </select>
+            <button type="button" id="refresh-models" class="refresh-button" title="Refresh Models">
+              <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
+                <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.3"/>
+              </svg>
+            </button>
+          </div>
+          <div id="models-loading" class="loading-indicator" style="visibility: hidden;">Loading models...</div>
+          <div class="form-info">Make sure Ollama is running, typically at http://localhost:11434 or http://127.0.0.1:11434</div>
+        </div>
+        
+        <div class="form-group">
+          <label for="temperature">Temperature:</label>
+          <input type="range" id="temperature" min="0" max="1" step="0.1" value="0.1" class="settings-input">
+          <span id="temperature-value">0.1</span>
+          <div class="form-info">Lower values are more focused, higher values more creative.</div>
+        </div>
+        
+        <button id="save-settings" class="settings-save-button">Save Settings</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
